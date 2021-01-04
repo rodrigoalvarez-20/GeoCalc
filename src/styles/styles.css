@@ -1,0 +1,24 @@
+.centerContentHorizontal {
+  text-align: center;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+.alignMiddleHV {
+  height: 100vh;
+  align-items: center;
+}
+
+.marginTop-12 {
+  margin-top: 12px;
+}
+
+.linkForButton {
+  color: white;
+}
+
+.linkForButton:hover {
+  text-decoration: none;
+  color: white;
+}
