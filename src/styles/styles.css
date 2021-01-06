@@ -14,11 +14,19 @@
   margin-top: 12px;
 }
 
-.linkForButton {
-  color: white;
+.linkForNav {
+  color: darkgray;
 }
 
-.linkForButton:hover {
+.linkForNav:hover {
   text-decoration: none;
-  color: white;
+  color: black;
+}
+
+.dropdown-item:active{
+  background-color: lightgray;
+}
+
+.marginSides-12 {
+  margin: 0 12px;
 }
