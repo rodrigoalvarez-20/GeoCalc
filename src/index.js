@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Home from "./components/home";
-import Login from "./components/login";
-import Register from "./components/register";
+import { withCookies } from "react-cookie";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/styles.css";
-import { withCookies } from "react-cookie";
+import "katex/dist/katex.min.css";
+
 import NavBar from "./components/navbar";
+import CalcRect from "./components/calc_rect";
+import Login from "./components/login";
+import Register from "./components/register";
 
 const FallBack = () => {
   return (
-    <div style={{ margin: "12px", textAlign: "center" }}>
+    <div
+      style={{
+        margin: "12px",
+        textAlign: "center",
+      }}
+    >
       <h1>Recurso no encontrado</h1>
     </div>
   );
@@ -36,7 +44,7 @@ const App = ({ cookies }) => {
         newestOnTop={false}
         closeOnClick
         pauseOnHover={false}
-      />
+      />{" "}
       {isLogged ? <NavBar /> : null}
       <Switch>
         <Route exact path={`${PATH}/`}>
@@ -46,7 +54,7 @@ const App = ({ cookies }) => {
           <Register />
         </Route>
         <Route exact path={`${PATH}/calc`}>
-          <Home />
+          <CalcRect />
         </Route>
         <Route path="*">
           <FallBack />
