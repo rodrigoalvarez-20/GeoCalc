@@ -12,6 +12,8 @@ import NavBar from "./components/navbar";
 import CalcRect from "./components/calc_rect";
 import Login from "./components/login";
 import Register from "./components/register";
+import CalcIntRect from "./components/int_rect";
+import ParPerp from "./components/par_perp";
 
 const FallBack = () => {
   return (
@@ -55,6 +57,12 @@ const App = ({ cookies }) => {
         </Route>
         <Route exact path={`${PATH}/calc`}>
           <CalcRect />
+        </Route>
+        <Route exact path={`${PATH}/calc/calculadora-interseccion`}>
+          <CalcIntRect />
+        </Route>
+        <Route exact path={`${PATH}/calc/par-perp`}>
+          <ParPerp />
         </Route>
         <Route path="*">
           <FallBack />
