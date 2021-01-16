@@ -30,58 +30,10 @@ const defParameters = {
   eq2_sign: "+",
 };
 
-/**
- * <div>
-            <div
-              style={{
-                height: "430px",
-                width: "80%",
-                border: "1px solid black",
-                margin: "24px auto",
-              }}
-              className="centerContentHorizontal"
-            ></div>
- */
-
 const CalcIntRect = () => {
   const [eqSelected, setEqSelected] = useState(eqTypes[0].value);
   const [eqParameters, setEqParameters] = useState(defParameters);
   const [data, setData] = useState(null);
-  const [exList, setExList] = useState([]);
-  const [isExample, setIsExample] = useState(false);
-
-  useEffect(() => {
-    /* axios({
-      method: "GET",
-      url: "http://localhost:8080/GeoCalcApi/Rectas?type=rectas",
-    })
-      .then((response) => {
-        const xmlData = new XMLParser().parseFromString(response.data);
-        if (xmlData.name === "error") toast.error(xmlData.value);
-        else {
-          const items = xmlData.children;
-          var exItems = [];
-          items.forEach((item) => {
-            const { id, inp1, inp2, inp3, type, sign } = item.attributes;
-            const { value } = item;
-            exItems.push({
-              id: Number(id),
-              inp1: Number(inp1),
-              inp2: Number(inp2),
-              inp3: Number(inp3),
-              sign,
-              type,
-              text: value,
-            });
-          });
-          setExList(exItems);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Ha obtener los ejemplos");
-      }); */
-  }, []);
 
   useEffect(() => {
     if (data !== null && Object.keys(data).length > 0) {
@@ -120,138 +72,6 @@ const CalcIntRect = () => {
       });
     }
   }, [data]);
-
-  const addItem = () => {
-    const { inp1, inp2, inp3, sign } = eqParameters;
-    const label =
-      eqSelected === eqTypes[0].value
-        ? `y=${inp1}x${sign}${inp2}`
-        : `${inp1}x${sign}${inp2}y=${inp3}`;
-    var id = 0;
-    exList.forEach((item) => {
-      if (Number(item.id > id)) id = Number(item.id);
-    });
-    const params = new URLSearchParams();
-    params.append("id", id + 1);
-    params.append("inp1", inp1);
-    params.append("inp2", inp2);
-    params.append("inp3", inp3);
-    params.append("sign", sign);
-    params.append("label", label);
-    params.append("type", eqSelected);
-    params.append("section", "rectas");
-    params.append("isForAdd", 1);
-    axios({
-      method: "PUT",
-      url: `http://localhost:8080/GeoCalcApi/Rectas`,
-      params: params,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    })
-      .then((response) => {
-        const xmlData = new XMLParser().parseFromString(response.data);
-        console.info(xmlData);
-        if (xmlData.name === "error") toast.error(xmlData.value);
-        else {
-          toast.success(xmlData.value);
-          const newItem = {
-            id: Number(id),
-            inp1: Number(inp1),
-            inp2: Number(inp2),
-            inp3: Number(inp3),
-            sign,
-            type: eqSelected,
-            text: label,
-          };
-          const prevItems = exList;
-          prevItems.push(newItem);
-          setExList(prevItems);
-          setIsExample(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Ha ocurrido un error al agregar la ecuacion");
-      });
-  };
-
-  const updateItem = () => {
-    const { inp1, inp2, inp3, sign, id } = eqParameters;
-    const label =
-      eqSelected === eqTypes[0].value
-        ? `y=${inp1}x${sign}${inp2}`
-        : `${inp1}x${sign}${inp2}y=${inp3}`;
-    const params = new URLSearchParams();
-    params.append("id", id);
-    params.append("inp1", inp1);
-    params.append("inp2", inp2);
-    params.append("inp3", inp3);
-    params.append("sign", sign);
-    params.append("label", label);
-    params.append("type", eqSelected);
-    params.append("section", "rectas");
-    axios({
-      method: "PUT",
-      url: `http://localhost:8080/GeoCalcApi/Rectas`,
-      params: params,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    })
-      .then((response) => {
-        const xmlData = new XMLParser().parseFromString(response.data);
-        if (xmlData.name === "error") toast.error(xmlData.value);
-        else {
-          toast.success(xmlData.value);
-          const newItem = {
-            id: Number(id),
-            inp1: Number(inp1),
-            inp2: Number(inp2),
-            inp3: Number(inp3),
-            sign,
-            type: eqSelected,
-            text: label,
-          };
-          const updatedItems = [];
-
-          exList.forEach((item) => {
-            if (Number(item.id) !== newItem.id) updatedItems.push(item);
-            else updatedItems.push(newItem);
-          });
-
-          setExList(updatedItems);
-          setIsExample(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Ha ocurrido un error al agregar la ecuacion");
-      });
-  };
-
-  const deleteItem = () => {
-    const { id } = eqParameters;
-    const params = new URLSearchParams();
-    params.append("type", "rectas");
-    params.append("id", id);
-    axios({
-      method: "DELETE",
-      url: `http://localhost:8080/GeoCalcApi/Rectas`,
-      params: params,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    })
-      .then((response) => {
-        const xmlData = new XMLParser().parseFromString(response.data);
-        if (xmlData.name === "error") toast.error(xmlData.value);
-        else {
-          toast.success(xmlData.value);
-          setExList(exList.filter((item) => item.id !== id));
-          setEqSelected({});
-          setIsExample(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Ha ocurrido un error al resolver la ecuacion");
-      });
-  };
 
   function generateData(xmlData) {
     const values = xmlData.children;
@@ -366,48 +186,9 @@ const CalcIntRect = () => {
       });
   };
 
-  function onSelectExample(data) {
-    setEqSelected(data.type);
-    setIsExample(true);
-    setEqParameters(data);
-  }
-
   const handleInputChange = (e) => {
     setEqParameters({ ...eqParameters, [e.target.name]: e.target.value });
   };
-
-  function renderEqButtons() {
-    return (
-      <div style={{ marginBottom: "22px" }}>
-        <Button
-          variant="outline-success"
-          className="marginSides-12 "
-          type="button"
-          onClick={addItem}
-        >
-          Guardar
-        </Button>
-        <Button
-          variant="outline-info"
-          className="marginSides-12 "
-          type="button"
-          onClick={updateItem}
-          disabled={!isExample}
-        >
-          Actualizar
-        </Button>
-        <Button
-          variant="outline-danger"
-          className="marginSides-12 "
-          type="button"
-          onClick={deleteItem}
-          disabled={!isExample}
-        >
-          Eliminar
-        </Button>
-      </div>
-    );
-  }
 
   function renderSlopeEq(eqNo) {
     return (
@@ -487,24 +268,6 @@ const CalcIntRect = () => {
     );
   }
 
-  function renderExampleList() {
-    return (
-      <ListGroup className="marginTop-12">
-        {exList.map((ex) => {
-          return (
-            <ListGroup.Item
-              key={ex.id}
-              action
-              onClick={() => onSelectExample(ex)}
-            >
-              <TeX math={ex.text} style={{ fontSize: "22px" }} />
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
-    );
-  }
-
   return (
     <Container>
       <h2 className="centerContentHorizontal marginTop-12">
@@ -527,9 +290,6 @@ const CalcIntRect = () => {
           </ToggleButton>
         ))}
       </ButtonGroup>
-      {
-        //renderEqButtons()
-      }
       <div style={{ margin: "3%" }}>
         <Form
           onSubmit={

@@ -14,6 +14,8 @@ import Login from "./components/login";
 import Register from "./components/register";
 import CalcIntRect from "./components/int_rect";
 import ParPerp from "./components/par_perp";
+import DistanciaPMedio from "./components/pmedio";
+import TwoPointsLine from "./components/two_point";
 
 const FallBack = () => {
   return (
@@ -63,6 +65,12 @@ const App = ({ cookies }) => {
         </Route>
         <Route exact path={`${PATH}/calc/par-perp`}>
           <ParPerp />
+        </Route>
+        <Route exact path={`${PATH}/calc/punto-medio`}>
+          <DistanciaPMedio />
+        </Route>
+        <Route exact path={`${PATH}/calc/rect-puntos`}>
+          <TwoPointsLine />
         </Route>
         <Route path="*">
           <FallBack />

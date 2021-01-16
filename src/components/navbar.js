@@ -52,14 +52,16 @@ const NavBar = ({ cookies, history }) => {
                 Distancia de un punto a una recta
               </Link>
             </NavDropdown.Item>
+
+            {/* 
             <NavDropdown.Divider />
             <NavDropdown.Item>
               <Link to="/triangulos" className="linkForNav">
                 Triangulos
               </Link>
-            </NavDropdown.Item>
+            </NavDropdown.Item> */}
           </NavDropdown>
-          <NavDropdown title="Circunferencia" id="dwCirc">
+          {/* <NavDropdown title="Circunferencia" id="dwCirc">
             <NavDropdown.Item>
               <Link to="/circunferencia" className="linkForNav">
                 Ecuacion de la circunferencia
@@ -75,7 +77,7 @@ const NavBar = ({ cookies, history }) => {
                 Interseccion entre una linea y una circunferencia
               </Link>
             </NavDropdown.Item>
-          </NavDropdown>
+          </NavDropdown> */}
         </Nav>
         <Nav>
           <Navbar.Text style={{ color: "black" }}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   ButtonGroup,
@@ -32,41 +32,55 @@ const defParameters = {
 const ParPerp = () => {
   const [eqSelected, setEqSelected] = useState(eqTypes[0].value);
   const [eqParameters, setEqParameters] = useState(defParameters);
-  //const [lineToCalc, setLineToCalc] = useState("paralela");
   const [data, setData] = useState({});
 
-  function renderEqButtons() {
-    return (
-      <div style={{ marginBottom: "22px" }}>
-        <Button
-          variant="outline-success"
-          className="marginSides-12 "
-          type="button"
-          //onClick={addItem}
-        >
-          Guardar
-        </Button>
-        <Button
-          variant="outline-info"
-          className="marginSides-12 "
-          type="button"
-          //onClick={updateItem}
-          //disabled={!isExample}
-        >
-          Actualizar
-        </Button>
-        <Button
-          variant="outline-danger"
-          className="marginSides-12 "
-          type="button"
-          //onClick={deleteItem}
-          //disabled={!isExample}
-        >
-          Eliminar
-        </Button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (Object.keys(data).length > 0) {
+      var ctx = document.getElementById("plotChartParPerp");
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: data.xValues, //Valores de x
+          datasets: [
+            {
+              label: "",
+              data: data.eq1yValues, //Valores de y
+              fill: false,
+              backgroundColor: "black",
+              borderColor: "#EC058E",
+              lineTension: 0.1,
+              spanGaps: false,
+            },
+            {
+              label: "",
+              data: data.eq2yValues, //Valores de y
+              fill: false,
+              backgroundColor: "black", //Punto
+              borderColor: "#62BBC1", //Linea
+              lineTension: 0.1,
+              spanGaps: false,
+            },
+            {
+              label: "",
+              data: [{ x: data.x, y: data.y }], //Valores de y
+              backgroundColor: "red", //Punto
+              lineTension: 0.1,
+              pointBorderWidth: 16,
+              borderColor: "purple",
+              spanGaps: false,
+              type: "scatter",
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Lineas paralelas y perpendiculares",
+          },
+        },
+      });
+    }
+  }, [data]);
 
   const handleInputChange = (e) => {
     setEqParameters({ ...eqParameters, [e.target.name]: e.target.value });
@@ -152,8 +166,57 @@ const ParPerp = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    //console.info(e.target);
-    console.info(eqParameters);
+    setData({});
+    const params = new URLSearchParams();
+    params.append("inp1", eqParameters.inp1);
+    params.append("inp2", eqParameters.inp2);
+    params.append("inp3", eqParameters.inp3);
+    params.append("lineType", eqParameters.lineType);
+    params.append("punto1", eqParameters.punto1);
+    params.append("punto2", eqParameters.punto2);
+    params.append("sign", eqParameters.sign);
+    params.append("eqType", eqSelected);
+    axios({
+      method: "POST",
+      url: `http://localhost:8080/GeoCalcApi/Rectas?type=par-perp`,
+      data: params,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    })
+      .then((response) => {
+        const xmlData = new XMLParser().parseFromString(response.data);
+        const values = xmlData.children;
+        const eq1Data = values[0].children;
+        const eq2Data = values[1].children;
+
+        var eq1yValues = [];
+        var eq1xValues = [];
+        var eq2yValues = [];
+
+        eq1Data.forEach((value) => {
+          const eqValues = value.children;
+          eq1xValues.push(eqValues[0].value);
+          eq1yValues.push(eqValues[1].value);
+        });
+
+        eq2Data.forEach((value) => {
+          const eqValues = value.children;
+          eq2yValues.push(eqValues[1].value);
+        });
+
+        const datos = {
+          xValues: eq1xValues,
+          eq1yValues,
+          eq2yValues,
+          x: eqParameters.punto1,
+          y: eqParameters.punto2,
+        };
+
+        setData(datos);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Ha ocurrido un error al realizar la peticion");
+      });
   };
 
   return (

@@ -26,19 +26,6 @@ const defParameters = {
   sign: "+",
 };
 
-/**
- * <div>
-            <div
-              style={{
-                height: "430px",
-                width: "80%",
-                border: "1px solid black",
-                margin: "24px auto",
-              }}
-              className="centerContentHorizontal"
-            ></div>
- */
-
 const CalcRect = () => {
   const [eqSelected, setEqSelected] = useState(eqTypes[0].value);
   const [eqParameters, setEqParameters] = useState(defParameters);
