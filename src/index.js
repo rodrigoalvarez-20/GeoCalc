@@ -37,7 +37,9 @@ const App = ({ cookies }) => {
   const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
-    setIsLogged(Object.keys(cookies.cookies).length !== 0);
+    setIsLogged(
+      Object.keys(cookies.cookies).length !== 0 && cookies.cookies.name !== ""
+    );
   }, []);
 
   return (

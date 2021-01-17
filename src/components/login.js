@@ -11,7 +11,8 @@ const Login = ({ history, cookies }) => {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (cookies.get("name")) history.replace("/calc");
+    if (cookies.get("name") && cookies.get("name") !== "")
+      history.replace("/GeoCalcApi/calc");
   });
 
   const onSubmit = (e) => {
@@ -37,7 +38,7 @@ const Login = ({ history, cookies }) => {
           toast.success(xml.children[0].value);
           cookies.set("name", xml.children[1].value, { path: "/" });
           cookies.set("lastName", xml.children[2].value, { path: "/" });
-          window.location.href = "/";
+          window.location.href = "/GeoCalcApi";
         }
       })
       .catch((error) => {
@@ -48,7 +49,7 @@ const Login = ({ history, cookies }) => {
   };
 
   const sendRegister = () => {
-    history.push("/register");
+    history.push("/GeoCalcApi/register");
   };
 
   return (

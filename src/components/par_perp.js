@@ -5,7 +5,6 @@ import {
   ToggleButton,
   Form,
   Button,
-  ListGroup,
 } from "react-bootstrap";
 import TeX from "@matejmazur/react-katex";
 import { Chart } from "chart.js";

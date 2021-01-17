@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { withCookies } from "react-cookie";
 import { Link, withRouter } from "react-router-dom";
+import MusicPlayer from "./musicPlayer";
 
 const BASE_ROUTE = "/GeoCalcApi/calc";
 
@@ -55,6 +56,7 @@ const NavBar = ({ cookies, history }) => {
           </NavDropdown>
         </Nav>
         <Nav>
+          <MusicPlayer />
           <Navbar.Text style={{ color: "black" }}>
             {`Ha iniciado sesion como: ${cookies.get("name")} ${cookies.get(
               "lastName"
@@ -62,8 +64,8 @@ const NavBar = ({ cookies, history }) => {
           </Navbar.Text>
           <Nav.Link
             onClick={() => {
-              cookies.remove("name");
-              cookies.remove("lastName");
+              cookies.set("name", "", { path: "/" });
+              cookies.set("lastName", "", { path: "/" });
               window.location.href = "/GeoCalcApi";
             }}
           >
@@ -75,4 +77,4 @@ const NavBar = ({ cookies, history }) => {
   );
 };
 
-export default withRouter(withCookies(NavBar));
+export default withCookies(withRouter(NavBar));

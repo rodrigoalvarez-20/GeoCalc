@@ -42,7 +42,7 @@ const Register = ({ history }) => {
   };
 
   const goBack = () => {
-    history.replace("/");
+    history.replace("/GeoCalcApi");
   };
 
   return (
