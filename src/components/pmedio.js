@@ -103,10 +103,11 @@ const DistanciaPMedio = () => {
     e.preventDefault();
     setData({});
     const params = new URLSearchParams();
-    params.append("x1", eqParameters.x1);
-    params.append("y1", eqParameters.y1);
-    params.append("x2", eqParameters.x2);
-    params.append("y2", eqParameters.y2);
+    const { x1, y1, x2, y2 } = eqParameters;
+    params.append("x1", x1 ? x1 : "0");
+    params.append("y1", y1 ? y1 : "0");
+    params.append("x2", x2 ? x2 : "0");
+    params.append("y2", y2 ? y2 : "0");
     axios({
       method: "POST",
       url: `http://localhost:8080/GeoCalcApi/Puntos?type=punto_medio`,

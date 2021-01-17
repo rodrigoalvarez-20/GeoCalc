@@ -62,7 +62,7 @@ const CalcRect = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Ha obtener los ejemplos");
+        toast.error("Ha ocurrido un error al obtener los ejemplos");
       });
   }, []);
 
@@ -465,6 +465,11 @@ const CalcRect = () => {
       <h2 className="centerContentHorizontal marginTop-12">
         Calculadora grafica de rectas
       </h2>
+      <div>
+        <audio controls>
+          <source src="instrumental.mp3" type="audio/mpeg"></source>
+        </audio>
+      </div>
       <div style={{ margin: "3%" }}>
         <h5>Selecciona el tipo de ecuacion</h5>
         <ButtonGroup toggle style={{ margin: "2% 0" }}>

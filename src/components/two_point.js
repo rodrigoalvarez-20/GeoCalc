@@ -20,38 +20,25 @@ const TwoPointsLine = () => {
 
   useEffect(() => {
     if (Object.keys(data).length > 0) {
+      const { eqPendiente, eqGen, xValues, yValues } = data;
       const { x1, y1, x2, y2 } = eqParameters;
-      var xMinValue, xMaxValue, yMinValue, yMaxValue;
-      if (Number(x1) < Number(x2)) {
-        xMinValue = Number(x1);
-        xMaxValue = Number(x2);
-      } else {
-        xMinValue = Number(x2);
-        xMaxValue = Number(x1);
-      }
-      if (Number(y1) < Number(y2)) {
-        yMinValue = Number(y1);
-        yMaxValue = Number(y2);
-      } else {
-        yMinValue = Number(y2);
-        yMaxValue = Number(y1);
-      }
-      var ctx = document.getElementById("plotChartParPerp");
+      var ctx = document.getElementById("plotChartTwoPoints");
       new Chart(ctx, {
-        type: "scatter",
+        type: "line",
         data: {
+          labels: xValues,
           datasets: [
             {
               label: "",
-              data: [{ x: data.xMedio, y: data.yMedio }],
-              backgroundColor: "blue",
+              data: yValues,
               lineTension: 0.1,
-              pointRadius: 12,
-              spanGaps: false,
+              fill: false,
+              backgroundColor: "#1A237E",
+              borderColor: "#FF80AB",
             },
             {
               label: "",
-              data: [{ x: eqParameters.x1, y: eqParameters.y1 }],
+              data: [{ x: x1, y: y1 }],
               backgroundColor: "black",
               lineTension: 0.1,
               pointRadius: 8,
@@ -59,7 +46,7 @@ const TwoPointsLine = () => {
             },
             {
               label: "",
-              data: [{ x: eqParameters.x2, y: eqParameters.y2 }],
+              data: [{ x: x2, y: y2 }],
               backgroundColor: "black",
               lineTension: 0.1,
               pointRadius: 8,
@@ -70,25 +57,7 @@ const TwoPointsLine = () => {
         options: {
           title: {
             display: true,
-            text: `Distancia entre puntos: ${data.distancia}`,
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  min: xMinValue - 5,
-                  max: xMaxValue + 5,
-                },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  min: yMinValue - 5,
-                  max: yMaxValue + 5,
-                },
-              },
-            ],
+            text: `Ecuaciones: ${eqPendiente} / ${eqGen}`,
           },
         },
       });
@@ -103,34 +72,44 @@ const TwoPointsLine = () => {
     e.preventDefault();
     setData({});
     const params = new URLSearchParams();
-    params.append("x1", eqParameters.x1);
-    params.append("y1", eqParameters.y1);
-    params.append("x2", eqParameters.x2);
-    params.append("y2", eqParameters.y2);
-    /* axios({
+    const { x1, y1, x2, y2 } = eqParameters;
+    params.append("x1", x1 ? x1 : "0");
+    params.append("y1", y1 ? y1 : "0");
+    params.append("x2", x2 ? x2 : "0");
+    params.append("y2", y2 ? y2 : "0");
+    axios({
       method: "POST",
-      url: `http://localhost:8080/GeoCalcApi/Puntos?type=punto_medio`,
+      url: `http://localhost:8080/GeoCalcApi/Puntos?type=two_points`,
       data: params,
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     })
       .then((response) => {
         const xmlData = new XMLParser().parseFromString(response.data);
         const values = xmlData.children;
-        const distancia = values[0].value;
-        const xMedio = values[1].value;
-        const yMedio = values[2].value;
-        var yValues = [];
+        const eqPendiente = values[0].value;
+        const eqGen = values[1].value;
+        const valores = values[2].children;
+
+        const xValues = [];
+        const yValues = [];
+
+        valores.forEach((punto) => {
+          const coords = punto.children;
+          xValues.push(coords[0].value);
+          yValues.push(coords[1].value);
+        });
 
         setData({
-          distancia,
-          xMedio,
-          yMedio,
+          eqPendiente,
+          eqGen,
+          xValues,
+          yValues,
         });
       })
       .catch((error) => {
         console.log(error);
         toast.error("Ha ocurrido un error al realizar la peticion");
-      }); */
+      });
   };
 
   function renderPointFields(noPoint) {
@@ -201,7 +180,7 @@ const TwoPointsLine = () => {
         </Form>
         {Object.keys(data).length > 0 ? (
           <canvas
-            id="plotChartParPerp"
+            id="plotChartTwoPoints"
             style={{ width: "450px", margin: "24px 0" }}
           ></canvas>
         ) : null}

@@ -48,7 +48,7 @@ const NavBar = ({ cookies, history }) => {
               </Link>
             </NavDropdown.Item>
             <NavDropdown.Item>
-              <Link to="/dist-rect-punto" className="linkForNav">
+              <Link to={`${BASE_ROUTE}/dist-rect-punto`} className="linkForNav">
                 Distancia de un punto a una recta
               </Link>
             </NavDropdown.Item>

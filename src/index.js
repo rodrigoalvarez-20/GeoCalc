@@ -16,6 +16,7 @@ import CalcIntRect from "./components/int_rect";
 import ParPerp from "./components/par_perp";
 import DistanciaPMedio from "./components/pmedio";
 import TwoPointsLine from "./components/two_point";
+import PointRect from "./components/point_rect";
 
 const FallBack = () => {
   return (
@@ -30,7 +31,7 @@ const FallBack = () => {
   );
 };
 
-const PATH = "";
+const PATH = "/GeoCalcApi";
 
 const App = ({ cookies }) => {
   const [isLogged, setIsLogged] = useState(false);
@@ -71,6 +72,9 @@ const App = ({ cookies }) => {
         </Route>
         <Route exact path={`${PATH}/calc/rect-puntos`}>
           <TwoPointsLine />
+        </Route>
+        <Route exact path={`${PATH}/calc/dist-rect-punto`}>
+          <PointRect />
         </Route>
         <Route path="*">
           <FallBack />
