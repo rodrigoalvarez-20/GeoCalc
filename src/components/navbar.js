@@ -3,7 +3,7 @@ import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { withCookies } from "react-cookie";
 import { Link, withRouter } from "react-router-dom";
 
-const BASE_ROUTE = "/calc";
+const BASE_ROUTE = "/GeoCalcApi/calc";
 
 const NavBar = ({ cookies, history }) => {
   return (
@@ -52,32 +52,7 @@ const NavBar = ({ cookies, history }) => {
                 Distancia de un punto a una recta
               </Link>
             </NavDropdown.Item>
-
-            {/* 
-            <NavDropdown.Divider />
-            <NavDropdown.Item>
-              <Link to="/triangulos" className="linkForNav">
-                Triangulos
-              </Link>
-            </NavDropdown.Item> */}
           </NavDropdown>
-          {/* <NavDropdown title="Circunferencia" id="dwCirc">
-            <NavDropdown.Item>
-              <Link to="/circunferencia" className="linkForNav">
-                Ecuacion de la circunferencia
-              </Link>
-            </NavDropdown.Item>
-            <NavDropdown.Item>
-              <Link to="/circ-puntos" className="linkForNav">
-                Ecuacion de la circunferencia que pasa por 3 puntos
-              </Link>
-            </NavDropdown.Item>
-            <NavDropdown.Item>
-              <Link to="/circ-lin" className="linkForNav">
-                Interseccion entre una linea y una circunferencia
-              </Link>
-            </NavDropdown.Item>
-          </NavDropdown> */}
         </Nav>
         <Nav>
           <Navbar.Text style={{ color: "black" }}>
@@ -89,7 +64,7 @@ const NavBar = ({ cookies, history }) => {
             onClick={() => {
               cookies.remove("name");
               cookies.remove("lastName");
-              window.location.href = "/";
+              window.location.href = "/GeoCalcApi";
             }}
           >
             Cerrar sesion
